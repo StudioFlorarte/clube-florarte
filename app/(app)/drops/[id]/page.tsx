@@ -11,10 +11,8 @@ export default async function DropPage({ params }: { params: { id: string } }) {
 
   return (
     <div style={{ maxWidth: 720 }}>
-      <p style={{ fontSize: 12, color: 'var(--ink-soft)', textTransform: 'uppercase', letterSpacing: 0.5 }}>
-        {drop.category}
-      </p>
-      <h1 style={{ fontSize: 32, marginTop: 4 }}>{drop.title}</h1>
+      <span className="badge">{drop.category}</span>
+      <h1 style={{ fontSize: 32, marginTop: 10 }}>{drop.title}</h1>
       {drop.description && (
         <p style={{ color: 'var(--ink-soft)', marginTop: 12, lineHeight: 1.6 }}>{drop.description}</p>
       )}

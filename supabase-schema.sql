@@ -34,6 +34,7 @@ create table if not exists feedback (
   id uuid primary key default gen_random_uuid(),
   author_id uuid not null references profiles(id) on delete cascade,
   message text not null,
+  rating smallint,
   created_at timestamptz not null default now()
 );
 
@@ -58,24 +59,42 @@ alter table drops enable row level security;
 alter table comments enable row level security;
 alter table feedback enable row level security;
 
+drop policy if exists "members read own profile" on profiles;
 create policy "members read own profile" on profiles for select using (auth.uid() = id);
+
+drop policy if exists "members read all profiles (for comment names)" on profiles;
 create policy "members read all profiles (for comment names)" on profiles for select using (true);
 
+drop policy if exists "members read drops" on drops;
 create policy "members read drops" on drops for select using (auth.role() = 'authenticated');
+
+drop policy if exists "only admins write drops" on drops;
 create policy "only admins write drops" on drops for insert with check (
   exists (select 1 from profiles where id = auth.uid() and is_admin = true)
 );
+
+drop policy if exists "only admins update drops" on drops;
 create policy "only admins update drops" on drops for update using (
   exists (select 1 from profiles where id = auth.uid() and is_admin = true)
 );
 
+drop policy if exists "members read comments" on comments;
 create policy "members read comments" on comments for select using (auth.role() = 'authenticated');
+
+drop policy if exists "members write own comments" on comments;
 create policy "members write own comments" on comments for insert with check (auth.uid() = author_id);
 
+drop policy if exists "members write own feedback" on feedback;
 create policy "members write own feedback" on feedback for insert with check (auth.uid() = author_id);
+
+drop policy if exists "only admins read feedback" on feedback;
 create policy "only admins read feedback" on feedback for select using (
   exists (select 1 from profiles where id = auth.uid() and is_admin = true)
 );
+
+-- Se você já rodou o schema antes desta atualização, rode esta linha separada
+-- pra adicionar a nota por estrelas na tabela de feedback:
+alter table feedback add column if not exists rating smallint;
 
 -- Depois de criar sua própria conta de membro (via tela de login ou Supabase Auth),
 -- rode este comando trocando o e-mail para se tornar admin:

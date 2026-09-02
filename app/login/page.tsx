@@ -79,7 +79,10 @@ export default function LoginPage() {
         </button>
 
         <p style={{ fontSize: 13, color: 'var(--ink-soft)', textAlign: 'center', marginTop: 20 }}>
-          Recebeu seu acesso por e-mail? Use os dados que te enviamos por lá.
+          Ainda não tem acesso?{' '}
+          <a href="https://wa.me/SEUNUMEROAQUI" target="_blank" rel="noreferrer" style={{ color: 'var(--wine)', fontWeight: 600 }}>
+            Fale com a gente
+          </a>
         </p>
       </form>
     </main>
