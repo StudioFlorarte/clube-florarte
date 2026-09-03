@@ -29,7 +29,7 @@ export async function deliverInvitation(input: { email: string; name: string; lo
   if (matchingFields?.length !== 1 || matchingTags?.length !== 1) throw new Error('activecampaign_fields_or_tags_missing')
   const result = await api('contact/sync', { contact: {
     email: input.email,
-    firstName: input.name.split(' ')[0],
+    ...(input.name.trim() ? {firstName: input.name.trim().split(' ')[0]} : {}),
     fieldValues: [{ field: matchingFields[0].id, value: input.url }],
   } })
   const contact = String(result.contact?.id || '')
