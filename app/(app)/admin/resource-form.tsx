@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { uploadImage } from '@/lib/uploads'
 import { useLanguage } from '@/app/language-provider'
+import { isCanvaUrl } from '@/lib/canva-url'
 import { locales, languageNames, Locale, Key } from '@/lib/i18n'
 type Kind = 'drops'|'palettes'|'font_pairs'|'icon_packs'
 const emptyTranslations = () => Object.fromEntries(locales.map(l=>[l,{title:'',description:'',category:''}])) as Record<Locale,{title:string;description:string;category:string}>
@@ -12,7 +13,7 @@ export default function ResourceForm() {
  const kinds:[Kind,Key][]=[['drops','newDrop'],['palettes','newPalette'],['font_pairs','newFont'],['icon_packs','newIcon']]
  async function submit(e:React.FormEvent){e.preventDefault();setBusy(true);setMessage('');try{
    if(locales.some(l=>!tr[l].title.trim()||!tr[l].description.trim()||(kind==='drops'&&!tr[l].category.trim())))throw new Error('invalidFields')
-   if(kind!=='palettes'&&url){const parsed=new URL(url);if(parsed.protocol!=='https:'||(kind!=='font_pairs'&&parsed.hostname!=='canva.com'&&!parsed.hostname.endsWith('.canva.com')))throw new Error('invalidFields')}
+   if(kind!=='palettes'&&url){const parsed=new URL(url);if(kind==='font_pairs'?parsed.protocol!=='https:':!isCanvaUrl(url))throw new Error('invalidFields')}
    const row:any={title:tr.pt.title.trim(),description:tr.pt.description.trim(),translations:tr}
    if(kind==='drops'||kind==='icon_packs'){row.canva_url=url;row.cover_url=file?await uploadImage(file,'covers'):null}
    if(kind==='drops')row.category=tr.pt.category.trim()
