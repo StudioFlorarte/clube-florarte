@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { trustedAppOrigin } from '@/lib/app-origin'
 import { createClient } from '@/lib/supabase/server'
 export async function GET(request: NextRequest) {
   const token_hash = request.nextUrl.searchParams.get('token_hash'); const type = request.nextUrl.searchParams.get('type')
@@ -12,8 +13,8 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   // Netlify can pass an internal URL to the function. Validate against the
   // configured public origin, never an untrusted forwarded host.
-  const origin = new URL(process.env.APP_URL || request.url).origin
-  if (request.headers.get('origin') !== origin) return new NextResponse(null,{status:403})
+  const origin = trustedAppOrigin(request.headers.get('origin'), request.url)
+  if (!origin) return new NextResponse(null,{status:403})
   const form = await request.formData()
   const token_hash = form.get('token_hash'); const type = form.get('type')
   if (typeof token_hash === 'string' && (type === 'invite' || type === 'recovery')) {
@@ -26,4 +27,3 @@ export async function POST(request: NextRequest) {
   }
   return NextResponse.redirect(new URL('/login?error=invalidInvite',origin),303)
 }
-

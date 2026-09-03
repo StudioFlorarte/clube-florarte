@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { trustedAppOrigin } from '@/lib/app-origin'
 import nodemailer from 'nodemailer'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 export const runtime='nodejs'
 export async function POST(request:NextRequest){
- if(request.headers.get('origin')!==new URL(process.env.APP_URL||request.url).origin)return NextResponse.json({error:'error'},{status:403})
+ if(!trustedAppOrigin(request.headers.get('origin'),request.url))return NextResponse.json({error:'error'},{status:403})
  const client=createClient();const {data:{user}}=await client.auth.getUser()
  if(!user)return NextResponse.json({error:'error'},{status:401})
  const {data:access,error:accessError}=await client.rpc('has_club_access');if(accessError||!access)return NextResponse.json({error:'error'},{status:403})
