@@ -211,3 +211,11 @@ label { display: grid; gap: .4rem; font-size: .9rem; font-weight: 500; }
 .profile-identity{background:linear-gradient(155deg,var(--cream),rgba(255,213,91,.28))}.profile-photo{background:linear-gradient(140deg,rgba(255,57,101,.24),rgba(255,213,91,.34))}.photo-pending,.feedback-status:not(:empty){background:rgba(255,114,114,.18)}
 .font-card,.service-card,.service-card-2,.service-card-3{background:linear-gradient(155deg,var(--cream),rgba(255,213,91,.32))}.service-button{background:var(--cream)}.services-hero{background:linear-gradient(112deg,var(--coral),var(--pink) 58%,var(--orange));color:var(--cream)}.services-hero .script,.services-hero h1{color:var(--cream)}
 @media(max-width:640px){.brand{width:112px;margin-right:auto}.brand img{max-height:54px}.section-brand-logo{width:210px}.landing-logo{margin-left:auto;margin-right:auto}}
+
+/* Stronger brand presence and clearer language control */
+.brand{width:240px;margin-left:auto;margin-right:auto}.brand img{max-height:none}
+.auth-logo{width:min(440px,100%);margin:0 auto 30px}.landing-logo{width:min(680px,100%)}.section-brand-logo{width:min(340px,85%)}
+.language-picker summary{background:rgba(255,213,91,.42);border-color:rgba(253,123,60,.42);box-shadow:0 8px 24px rgba(176,14,66,.16)}
+.language-options{box-shadow:0 16px 36px rgba(176,14,66,.22)}
+.auth-card{text-align:center}.auth-card .script{margin-left:auto;margin-right:auto}.auth-card form label{text-align:left}.auth-card .text-button{text-align:center}.auth-card>a{display:inline-block}
+@media(max-width:640px){.brand{width:154px;margin-right:auto;margin-left:0}.brand img{max-height:56px}.auth-logo{width:min(390px,100%)}.section-brand-logo{width:280px}}
