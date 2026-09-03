@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Alex+Brush&family=Work+Sans:wght@400;500;600&display=swap');
+@font-face{font-family:'Operetta Florarte';src:url('/fonts/operetta-12-medium.otf') format('opentype');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Amoresa Florarte';src:url('/fonts/amoresa-regular.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Poppins Florarte';src:url('/fonts/poppins-regular.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Poppins Florarte';src:url('/fonts/poppins-medium.ttf') format('truetype');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Poppins Florarte';src:url('/fonts/poppins-semibold.ttf') format('truetype');font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'Poppins Florarte';src:url('/fonts/poppins-bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
 
 :root {
   /* Brand palette (Studio FlorArte) */
@@ -13,12 +18,9 @@
   --ink: #4A1626;
   --ink-soft: #7A4356;
 
-  /* Type -- swap these @font-face names for the real Amoresa / Operetta
-     font files once you have the licensed files; Playfair + Alex Brush
-     are close free stand-ins so the prototype reads the same. */
-  --font-display: 'Playfair Display', 'Operetta', Georgia, serif;
-  --font-script: 'Alex Brush', 'Amoresa', cursive;
-  --font-body: 'Work Sans', system-ui, sans-serif;
+  --font-display: 'Operetta Florarte', Georgia, serif;
+  --font-script: 'Amoresa Florarte', cursive;
+  --font-body: 'Poppins Florarte', system-ui, sans-serif;
 
   --radius: 20px;
   --shadow-card: 0 10px 30px rgba(176, 14, 66, 0.08);
