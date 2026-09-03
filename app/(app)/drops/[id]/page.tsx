@@ -1,30 +1,13 @@
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { getT, getLocale } from '@/lib/locale-server'
+import { localized } from '@/lib/i18n'
 import CommentSection from './comment-section'
-
 export default async function DropPage({ params }: { params: { id: string } }) {
-  const supabase = createClient()
-  const { data: drop } = await supabase.from('drops').select('*').eq('id', params.id).single()
-
-  if (!drop) {
-    return <p>Esse drop não foi encontrado.</p>
-  }
-
-  return (
-    <div style={{ maxWidth: 720 }}>
-      <span className="badge">{drop.category}</span>
-      <h1 style={{ fontSize: 32, marginTop: 10 }}>{drop.title}</h1>
-      {drop.description && (
-        <p style={{ color: 'var(--ink-soft)', marginTop: 12, lineHeight: 1.6 }}>{drop.description}</p>
-      )}
-
-      <a href={drop.canva_url} target="_blank" rel="noreferrer" className="btn-primary" style={{ display: 'inline-block', marginTop: 24, textDecoration: 'none' }}>
-        Abrir no Canva
-      </a>
-
-      <div style={{ marginTop: 48 }}>
-        <h2 style={{ fontSize: 22, marginBottom: 16 }}>Comentários</h2>
-        <CommentSection dropId={drop.id} />
-      </div>
-    </div>
-  )
+ const client = createClient(); const t = getT(); const locale = getLocale()
+ const { data: drop, error } = await client.from('drops').select('*').eq('id',params.id).maybeSingle()
+ if (error) return <p role="alert">{t('loadError')}</p>
+ if (!drop) notFound()
+ return <div className="drop-detail"><Link className="back-link" href="/dashboard">← {t('back')}</Link><article className="card drop-card"><div className="drop-cover detail-cover">{drop.cover_url && <img src={drop.cover_url} alt="" />}</div><div className="card-content">{localized(drop,'category',locale) && <span className="badge">{localized(drop,'category',locale)}</span>}<h1>{localized(drop,'title',locale)}</h1><p>{localized(drop,'description',locale)}</p><a href={drop.canva_url} target="_blank" rel="noopener noreferrer" className="btn-primary canva-link">{t('canva')} ↗</a></div></article><section className="drop-conversation"><h2 className="script">{t('conversation')}</h2><p>{t('conversationHelp')}</p><CommentSection dropId={drop.id} /></section></div>
 }
