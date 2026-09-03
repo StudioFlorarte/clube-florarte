@@ -12,7 +12,7 @@ export default function Activate({searchParams}:{searchParams:{token_hash?:strin
  const valid=/^[a-f0-9]{32,128}$/i.test(token)&&['invite','recovery'].includes(type)
  return <main style={{minHeight:'100vh',display:'grid',placeItems:'center',padding:24,background:'#fff5eb',color:'#75434b'}}>
   <section style={{width:'100%',maxWidth:480,padding:36,borderRadius:28,background:'#fffdfb',textAlign:'center'}} lang={en?'en':'pt-BR'}>
-   <p style={{fontFamily:'Georgia,serif',fontSize:30,color:'#bb1048'}}>Clube Florarte</p>
+   <img src="/brand/clube-florarte-logo.png" alt="Clube Florarte" style={{display:'block',width:'min(280px,90%)',height:'auto',margin:'0 auto 24px'}}/>
    <h1 style={{fontSize:28}}>{en?'Welcome to your creative space':'Seu espaço criativo espera por você'}</h1>
    <p>{valid?(en?'Continue to create your personal password.':'Continue para criar sua senha pessoal.'):(en?'This link is invalid. Please contact us for help.':'Este link é inválido. Fale conosco para receber ajuda.')}</p>
    {valid&&<form method="post" action="/auth/confirm">
@@ -23,4 +23,3 @@ export default function Activate({searchParams}:{searchParams:{token_hash?:strin
   </section>
  </main>
 }
-
