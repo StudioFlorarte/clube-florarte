@@ -1,0 +1,10 @@
+[build]
+  command = "pnpm build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Netlify detects Next.js and installs its OpenNext adapter automatically.
+# Set application secrets in Netlify Environment variables, scoped to
+# Builds + Functions (including runtime), never in this file.

@@ -35,10 +35,22 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname.startsWith('/estrategia') ||
     request.nextUrl.pathname.startsWith('/feedback')
 
-  if (!user && isAppRoute) {
+  const isAccountRoute = request.nextUrl.pathname.startsWith('/profile') || request.nextUrl.pathname.startsWith('/subscription')
+  if (!user && (isAppRoute || isAccountRoute)) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
+  }
+
+  if (user && isAppRoute) {
+    const { data: access, error } = await supabase.rpc('has_club_access')
+    if (error || !access) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/subscription'
+      const redirect = NextResponse.redirect(url)
+      response.cookies.getAll().forEach(cookie => redirect.cookies.set(cookie))
+      return redirect
+    }
   }
 
   return response

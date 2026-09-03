@@ -1,44 +1,33 @@
-# Clube Florarte — área de membros
+# Clube Florarte
 
-## O que já está pronto
-- Login de membros (e-mail + senha) usando Supabase Auth
-- Dashboard com grade de drops, cada um levando ao Canva
-- Comentários em cada drop
-- Painel admin: publicar novo drop + ver total de membros
-- Página de feedback geral
-- Stubs (páginas em branco prontas pra preencher) para Ícones, Paletas & Fontes e Estratégia de Conteúdo
-- Botão flutuante de WhatsApp
-- Cores e tipografia baseadas na identidade da Florarte (troque as fontes de verdade — veja abaixo)
+Área de membros em Next.js 14, Supabase e Netlify.
 
-## 1. Rodar o banco de dados
-No painel do Supabase, vá em **SQL Editor > New query**, cole o conteúdo de `supabase-schema.sql` e clique em **Run**.
-Isso cria as tabelas de perfis, drops, comentários e feedback, com as regras de segurança já configuradas.
+- Drops com capas enviadas pela administração e comentários de membros.
+- Administração de paletas, combinações de fontes e coleções de ícones no Canva.
+- Perfil com foto, nome, e-mail, telefone, Instagram, troca de senha e validade do plano.
+- Interface em português, inglês, francês e espanhol; conteúdo editorial com traduções próprias.
+- Acesso por convite e compra anual confirmada na Eduzz, protegido também por RLS.
+- Feedback encaminhado pelo servidor para `hello@studioflorarte.com`, usando SMTP Hostinger.
 
-## 2. Criar sua conta de admin
-1. No painel do Supabase, vá em **Authentication > Users > Add user** e crie sua própria conta (e-mail + senha).
-2. Volte no SQL Editor e rode (trocando o e-mail):
-   ```sql
-   update profiles set is_admin = true where id = (select id from auth.users where email = 'seu-email@exemplo.com');
-   ```
-3. Use esse e-mail e senha pra entrar na plataforma — você verá o "★ Painel admin" no menu.
+## Configuração
 
-## 3. Convidar membros
-Por enquanto, criar cada membro é manual: **Authentication > Users > Add user**, com e-mail e uma senha temporária. Depois é só avisar a pessoa por WhatsApp/e-mail.
+Leia [SETUP.md](SETUP.md) para as configurações da Netlify, SMTP, convites do Supabase e webhooks Eduzz. Copie `.env.example` para `.env.local` somente no ambiente local e preencha os valores sem versionar segredos.
 
-## 4. Rodar localmente (opcional, pra você ver antes de publicar)
-```bash
-npm install
-npm run dev
+```sh
+pnpm install --frozen-lockfile
+pnpm dev
 ```
-Abra http://localhost:3000
 
-## 5. Publicar o site (deploy)
-1. Crie uma conta gratuita em vercel.com (dá pra entrar com GitHub)
-2. Suba esta pasta pra um repositório no GitHub (ou arraste a pasta direto no site da Vercel)
-3. Na Vercel, importe o projeto e cole as duas variáveis do `.env.local` nas configurações de Environment Variables
-4. Deploy — a Vercel te dá um link tipo `clube-florarte.vercel.app`, e depois dá pra ligar seu domínio próprio
+```sh
+pnpm test
+pnpm typecheck
+pnpm build
+```
 
-## Pendências de identidade visual
-- As fontes reais (Amoresa e Operetta) precisam dos arquivos de fonte licenciados — por enquanto o código usa Playfair Display e Alex Brush como substitutas visuais parecidas, em `app/globals.css`.
-- Troque `SEUNUMEROAQUI` no link do WhatsApp (`app/(app)/layout.tsx`) pelo seu número.
-- Troque o link do Notion em `app/(app)/estrategia/page.tsx` pelo link público do seu board.
+## Banco de dados
+
+No projeto existente, a migração registrada já foi aplicada. Não execute novamente `supabase-schema.sql` em produção: ele representa a versão inicial, anterior ao controle de assinaturas.
+
+Para um projeto novo, aplique o schema inicial, depois `schema-upgrade.sql` e `seed-library.sql`. O teste `tests/access.sql` verifica as permissões dentro de uma transação com rollback, sem envio de e-mails.
+
+As fontes licenciadas Amoresa e Operetta ainda não foram fornecidas. A identidade visual usa Playfair Display, Alex Brush e Work Sans. As capas são escolhidas pela administração no envio de cada drop.
