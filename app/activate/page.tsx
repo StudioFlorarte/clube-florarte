@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 export const dynamic = 'force-dynamic'
-export const metadata: Metadata = { title:'Clube Florarte', robots:{index:false,follow:false}, referrer:'no-referrer' }
+// Native form POSTs under no-referrer send Origin: null and fail our CSRF check.
+// strict-origin keeps the real origin while omitting the path and private token.
+export const metadata: Metadata = { title:'Clube Florarte', robots:{index:false,follow:false}, referrer:'strict-origin' }
 
 // GET only renders a confirmation button. Email scanners must not consume the OTP.
 export default function Activate({searchParams}:{searchParams:{token_hash?:string;type?:string;lang?:string}}) {
@@ -21,3 +23,4 @@ export default function Activate({searchParams}:{searchParams:{token_hash?:strin
   </section>
  </main>
 }
+
