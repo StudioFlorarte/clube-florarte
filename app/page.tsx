@@ -20,14 +20,11 @@ export default function LandingPage() {
         padding: '80px 24px',
       }}
     >
-      <p style={{ fontFamily: 'var(--font-display)', fontSize: 26, color: 'var(--wine)', letterSpacing: 0.5 }}>
-        studio <span style={{ fontFamily: 'var(--font-script)', fontSize: 32 }}>FlorArte</span>
-      </p>
-
       <p style={{ fontFamily: 'var(--font-script)', fontSize: 32, color: 'var(--pink)', marginTop: 32 }}>
         bem-vinda ao
       </p>
-      <img className="landing-logo" src="/brand/clube-florarte-pt.png" alt="Clube Florarte" />
+      <img className="landing-logo landing-logo-outline" src="/brand/clube-florarte-logo.png" alt="Clube Florarte" />
+      <div className="studio-credit landing-credit"><span>by</span><img src="/brand/studio-florarte-dark.png" alt="Studio Florarte"/></div>
       <p style={{ color: 'var(--ink-soft)', maxWidth: 520, marginTop: 16, fontSize: 17, lineHeight: 1.6 }}>
         Um clube de templates de Canva para empreendedoras, criadoras e social medias que querem um
         visual bonito, alegre e com elegância de estúdio.
@@ -59,7 +56,7 @@ export default function LandingPage() {
         }}
       >
         {features.map((f) => (
-          <div key={f.title} className="card" style={{ padding: '24px 22px', textAlign: 'left' }}>
+          <div key={f.title} className="card landing-feature-card" style={{ padding: '24px 22px', textAlign: 'left' }}>
             <h3 style={{ fontSize: 18, marginBottom: 8 }}>{f.title}</h3>
             <p style={{ fontSize: 14, color: 'var(--ink-soft)', lineHeight: 1.5 }}>{f.desc}</p>
           </div>

@@ -225,3 +225,5 @@ label { display: grid; gap: .4rem; font-size: .9rem; font-weight: 500; }
 .drop-card,.resource-card,.font-card{background:linear-gradient(145deg,rgba(255,213,91,.34),rgba(255,213,91,.18));border:1px solid rgba(253,123,60,.16)}
 .drop-card .card-content{background:transparent}.resource-card:hover{box-shadow:0 16px 32px rgba(176,14,66,.16)}
 @media(max-width:640px){.auth-logo-outline{width:min(285px,80%)}.studio-credit img{width:105px}}
+.landing-logo-outline{width:min(390px,82%);margin:0 auto 8px}.landing-credit{margin-bottom:18px}.landing-feature-card{background:linear-gradient(145deg,rgba(255,213,91,.34),rgba(255,213,91,.18));border:1px solid rgba(253,123,60,.16)}
+@media(max-width:640px){.landing-logo-outline{width:min(310px,84%)}}
