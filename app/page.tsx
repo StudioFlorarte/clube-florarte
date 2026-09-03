@@ -27,7 +27,7 @@ export default function LandingPage() {
       <p style={{ fontFamily: 'var(--font-script)', fontSize: 32, color: 'var(--pink)', marginTop: 32 }}>
         bem-vinda ao
       </p>
-      <img className="landing-logo" src="/brand/clube-florarte-logo.png" alt="Clube Florarte" />
+      <img className="landing-logo" src="/brand/clube-florarte-pt.png" alt="Clube Florarte" />
       <p style={{ color: 'var(--ink-soft)', maxWidth: 520, marginTop: 16, fontSize: 17, lineHeight: 1.6 }}>
         Um clube de templates de Canva para empreendedoras, criadoras e social medias que querem um
         visual bonito, alegre e com elegância de estúdio.
