@@ -227,3 +227,8 @@ label { display: grid; gap: .4rem; font-size: .9rem; font-weight: 500; }
 @media(max-width:640px){.auth-logo-outline{width:min(285px,80%)}.studio-credit img{width:105px}}
 .landing-logo-outline{width:min(390px,82%);margin:0 auto 8px}.landing-credit{margin-bottom:18px}.landing-feature-card{background:linear-gradient(145deg,rgba(255,213,91,.34),rgba(255,213,91,.18));border:1px solid rgba(253,123,60,.16)}
 @media(max-width:640px){.landing-logo-outline{width:min(310px,84%)}}
+
+/* High-contrast collection cards */
+.drop-card,.resource-card,.font-card,.landing-feature-card{background:linear-gradient(135deg,var(--pink),var(--coral) 48%,var(--orange));border-color:rgba(255,213,91,.55);color:var(--cream)}
+.drop-card h2,.drop-card p,.resource-card .resource-title,.resource-card .resource-description,.resource-card .resource-cta,.font-card .font-pair-name,.font-card p,.font-card span,.landing-feature-card h3,.landing-feature-card p{color:var(--cream)!important}
+.drop-card .badge{background:var(--yellow);color:var(--wine)!important}.resource-card:hover{box-shadow:0 18px 36px rgba(176,14,66,.24)}
