@@ -78,7 +78,8 @@ do $$ declare tbl text; begin
   execute format('create policy content_read on public.%I for select to authenticated using ((select private.has_access()))',tbl);
   execute format('create policy content_insert on public.%I for insert to authenticated with check ((select private.is_admin()))',tbl);
   execute format('create policy content_update on public.%I for update to authenticated using ((select private.is_admin())) with check ((select private.is_admin()))',tbl);
-  execute format('grant select,insert,update on public.%I to authenticated',tbl);
+  execute format('create policy content_delete on public.%I for delete to authenticated using ((select private.is_admin()))',tbl);
+  execute format('grant select,insert,update,delete on public.%I to authenticated',tbl);
  end loop;
 end $$;
 create policy comments_read on public.comments for select to authenticated using((select private.has_access()));
