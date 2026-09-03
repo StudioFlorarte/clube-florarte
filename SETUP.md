@@ -14,7 +14,7 @@ Vincule o repositório `StudioFlorarte/clube-florarte` ao projeto existente, usa
 
 Use `https://sensational-biscochitos-5c177c.netlify.app` como `APP_URL` e Site URL do Supabase, salvo se houver um domínio personalizado principal. O link com prefixo `6a989fd963186600087c919d--` aponta para uma versão específica e não deve ser usado nos convites.
 
-O endereço fornecido respondeu HTTP 401 durante a verificação: a proteção de acesso da Netlify pode impedir clientes e webhooks de chegar ao aplicativo. Antes de ativar a integração, confirme no painel quais URLs estão protegidas e disponibilize o endereço de produção para o público pretendido; o aplicativo mantém sua própria autenticação e bloqueio por assinatura. Alterar essa proteção deve ser uma decisão explícita da proprietária.
+A produção foi tornada pública com autorização da proprietária; os previews permanecem privados. O aplicativo mantém autenticação e bloqueio por assinatura.
 
 Defina as variáveis de `.env.example` no painel de variáveis de ambiente da hospedagem:
 
@@ -35,7 +35,7 @@ Instalação e validação: `pnpm install --frozen-lockfile`, `pnpm test`, `pnpm
 
 Em Authentication → URL Configuration, configure a Site URL com o endereço final e autorize `/set-password` nas URLs de redirecionamento.
 
-Em Authentication → Email/SMTP, ative SMTP próprio com os dados da Hostinger, TLS na porta 465. Defina remetente e nome do Clube Florarte. Esse SMTP é separado das variáveis da hospedagem: o Supabase envia os convites e redefinições; o site envia os feedbacks.
+Em Authentication → Email/SMTP, ative SMTP próprio com os dados da Hostinger, TLS na porta 465. Defina remetente e nome do Clube Florarte. Esse SMTP é separado das variáveis da hospedagem: o Supabase envia redefinições de senha; o site envia feedbacks. Os convites de compra agora são gerados com generateLink, sem envio pelo Supabase, e entregues pelo ActiveCampaign.
 
 Nos modelos de convite e de recuperação, use links de confirmação por `TokenHash`:
 
@@ -57,7 +57,7 @@ Opcionalmente ative a proteção de senhas vazadas, apontada pelo verificador do
 
 ## 3. Eduzz: dois produtos anuais
 
-Produtos autorizados: **3095513** e **3098697**.
+Produtos anuais autorizados: **3095513 = português**, **3098697 = inglês**.
 
 No DevHub Eduzz → Webhook, crie uma configuração apontando para:
 
@@ -81,7 +81,17 @@ Eventos repetidos não criam novas assinaturas. O registro do evento e da compra
 
 Depois de configurar, use o teste de webhook da Eduzz e uma compra de teste autorizada. Verifique: e-mail de convite, definição de senha, biblioteca, data de validade, renovação, reembolso e registro de erros no histórico de entregas. Compras anteriores à integração precisam ser importadas de uma exportação verificada da Eduzz; cadastrar alguém manualmente sem a assinatura não libera acesso.
 
-O ActiveCampaign pode cuidar de boas-vindas, lembretes e reativação. A liberação do conteúdo é controlada pela confirmação da Eduzz no Supabase. Não foi criada nem alterada nenhuma automação no ActiveCampaign nesta atualização.
+### Convites pelo ActiveCampaign
+
+Configure `ACTIVECAMPAIGN_API_URL=https://studioflorarte95275.api-us1.com` e `ACTIVECAMPAIGN_API_KEY` como segredo de servidor na Netlify. A migração `private_activecampaign_invitation_delivery`, registrada em `activecampaign-schema.sql`, já foi aplicada. Os links ficam inacessíveis às funções de cliente; uma trava por email evita processamento simultâneo.
+
+A automação `clube florarte-PT` (ID 1) usa somente a tag `florarte-acesso-pronto-pt` e o campo personalizado `%FLORARTEACCESSURL%`. A automação `clube florarte-EN` (ID 2) usa `florarte-acesso-pronto-en` e `%FLORARTEACCESSURLEN%`. Configure execução uma vez, envio imediato e rastreamento de links desabilitado. O gatilho antigo de inscrição na lista foi removido da automação PT. Ambas permanecem inativas durante a validação.
+
+O servidor gera o link, atualiza o campo do contato e só então adiciona a tag de envio. A integração Eduzz existente continua responsável pela inscrição na lista do ActiveCampaign. Contatos sem inscrição ativa, inclusive destinatários de presentes que não estejam na lista, retornam falha para revisão; o servidor não reinscreve contatos cancelados. A aplicação da tag confirma o agendamento, não a entrega na caixa de entrada.
+
+O botão abre `/activate`, que pede confirmação antes de consumir o token. Abrir o email ou inspecionar seu link não inicia a sessão. A pessoa define sua própria senha; nenhuma senha é enviada por email. O prazo do link depende da configuração OTP do Supabase. Links vencidos precisam de atendimento/novo convite; não há reenvio automático de convites já agendados. Recuperação de senha e feedback ainda dependem da configuração SMTP da Hostinger.
+
+Antes da ativação final: validar PT e EN em endereços de teste autorizados, inscrição na lista, personalização do botão, definição de senha e acesso pago. Conferir duplicidade e reembolso. Só então ativar as duas automações, definir `ACTIVECAMPAIGN_INVITATIONS_ENABLED=true`, publicar novamente e ativar o webhook Eduzz. Com essa variável ausente ou falsa, eventos de pagamento retornam 503; reembolsos assinados continuam sendo processados. Não liberar o webhook antes desse conjunto estar pronto.
 
 ## 4. Administração e idiomas
 
@@ -94,9 +104,10 @@ Instagram é somente o @/link informado pela pessoa; não solicita autorização
 ## Validação realizada
 
 - Build de produção e verificação TypeScript.
-- Seis testes de assinatura do webhook, produtos autorizados, validade anual e eventos.
+- Onze testes de assinatura, produtos, idiomas, validade anual, eventos e agendamento no ActiveCampaign; sem envios reais.
 - Testes transacionais no Supabase, sem persistir contas de teste: bloqueio de cadastro aberto, acesso sem pagamento, assinatura ativa/vencida/reembolsada, prevenção de autoatribuição de administração, gravação do perfil, autoria dos comentários, duplicidade e ordem de eventos.
 - RLS nas tabelas e mídia privada. O aviso informativo de ausência de políticas em `eduzz_events` é intencional: essa tabela só é acessível pelo servidor.
 - A entrega real de e-mails e os eventos reais da Eduzz dependem da configuração e do teste final acima.
 
 Referências: [Hostinger SMTP](https://www.hostinger.com/br/support/1575756-como-encontrar-os-detalhes-de-configuracao-de-e-mail-no-hpanel-hostinger/), [assinatura Eduzz](https://developers.eduzz.com/docs/webhook/security), [fatura paga](https://developers.eduzz.com/reference/webhook/myeduzz-invoice-paid), [convites Supabase](https://supabase.com/docs/reference/javascript/auth-admin-inviteuserbyemail), [proteção de senhas](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection).
+
