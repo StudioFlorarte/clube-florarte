@@ -26,6 +26,7 @@ export const messages = {
   palettes: ['Paletas & Fontes', 'Palettes & Fonts', 'Palettes et polices', 'Paletas y fuentes'],
   strategy: ['Estratégia', 'Strategy', 'Stratégie', 'Estrategia'],
   feedback: ['Feedback', 'Feedback', 'Avis', 'Comentarios'],
+  services: ['Serviços & Extras', 'Services & Extras', 'Services & Extras', 'Servicios & Extras'],
   admin: ['Painel admin', 'Admin panel', 'Administration', 'Panel de administración'],
   memberCount: ['Total de membros', 'Total members', 'Nombre de membres', 'Total de miembros'],
   publishedDrops: ['Drops publicados', 'Published drops', 'Drops publiés', 'Drops publicados'],

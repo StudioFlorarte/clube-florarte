@@ -1,0 +1,4 @@
+'use client'
+import { useLanguage } from '@/app/language-provider'
+const labels={pt:'Falar com a Lally',en:'Chat with Lally',fr:'Parler avec Lally',es:'Hablar con Lally'}
+export default function WhatsAppButton(){const {locale}=useLanguage();const label=labels[locale];return <a className="whatsapp-button" href={`https://wa.me/5541933004004?text=${encodeURIComponent(label+' — Clube Florarte')}`} target="_blank" rel="noopener noreferrer" aria-label={`${label} — WhatsApp`}><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M27 15.5A11.5 11.5 0 0 1 10.1 25.7L4 27.5l1.8-5.9A11.5 11.5 0 1 1 27 15.5Z"/><path d="M11 10.5c.5-.5 1.1-.6 1.5.2l1.3 2.4c.2.5.1.8-.3 1.2l-.8.8c.9 2.1 2.5 3.7 4.7 4.6l.9-1c.4-.4.8-.5 1.2-.2l2.3 1.3c.8.4.7 1.1.2 1.6-1.1 1.2-2.7 1.7-4.3 1.2-5.6-1.7-9.2-5.3-10.6-10.4-.4-1.5.5-2.7 1.9-1.7Z"/></svg><span>{label}</span></a>}

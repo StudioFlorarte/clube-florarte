@@ -38,7 +38,7 @@ export default function LandingPage() {
           Entrar no clube
         </Link>
         <a
-          href="https://wa.me/SEUNUMEROAQUI?text=Oi!%20Quero%20fazer%20parte%20do%20Clube%20Florarte"
+          href="https://wa.me/5541933004004?text=Oi!%20Quero%20fazer%20parte%20do%20Clube%20Florarte"
           target="_blank"
           rel="noreferrer"
           className="btn-secondary"

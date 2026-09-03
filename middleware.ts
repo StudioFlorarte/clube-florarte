@@ -33,6 +33,7 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname.startsWith('/icons') ||
     request.nextUrl.pathname.startsWith('/palettes') ||
     request.nextUrl.pathname.startsWith('/estrategia') ||
+    request.nextUrl.pathname.startsWith('/services') ||
     request.nextUrl.pathname.startsWith('/feedback')
 
   const isAccountRoute = request.nextUrl.pathname.startsWith('/profile') || request.nextUrl.pathname.startsWith('/subscription')
