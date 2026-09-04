@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 export const dynamic = 'force-dynamic'
 // Native form POSTs under no-referrer send Origin: null and fail our CSRF check.
 // strict-origin keeps the real origin while omitting the path and private token.
-export const metadata: Metadata = { title:'Clube Florarte', robots:{index:false,follow:false}, referrer:'strict-origin' }
+export function generateMetadata({searchParams}:{searchParams:{lang?:string}}):Metadata{return{title:searchParams.lang==='en'?'Florarte Club':'Clube Florarte',robots:{index:false,follow:false},referrer:'strict-origin'}}
 
 // GET only renders a confirmation button. Email scanners must not consume the OTP.
 export default function Activate({searchParams}:{searchParams:{token_hash?:string;type?:string;lang?:string}}) {
@@ -10,7 +10,7 @@ export default function Activate({searchParams}:{searchParams:{token_hash?:strin
  const token=searchParams.token_hash||''
  const type=searchParams.type||''
  const valid=/^[a-f0-9]{32,128}$/i.test(token)&&['invite','recovery'].includes(type)
- return <main style={{minHeight:'100vh',display:'grid',placeItems:'center',padding:24,background:'#fff5eb',color:'#75434b'}}>
+ return <main style={{minHeight:'100vh',display:'grid',placeItems:'center',padding:24,background:'#fff5ec,color':'#75434b'}}>
   <section style={{width:'100%',maxWidth:480,padding:36,borderRadius:28,background:'#fffdfb',textAlign:'center'}} lang={en?'en':'pt-BR'}>
    <img src={en?'/brand/florarte-club-intl.png':'/brand/clube-florarte-pt.png'} alt={en?'Florarte Club':'Clube Florarte'} style={{display:'block',width:'min(280px,90%)',height:'auto',margin:'0 auto 24px'}}/>
    <h1 style={{fontSize:28}}>{en?'Welcome to your creative space':'Seu espaço criativo espera por você'}</h1>

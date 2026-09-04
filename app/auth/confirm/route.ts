@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { trustedAppOrigin } from '@/lib/app-origin'
 import { createClient } from '@/lib/supabase/server'
 export async function GET(request: NextRequest) {
-  const token_hash = request.nextUrl.searchParams.get('token_hash'); const type = request.nextUrl.searchParams.get('type')
+  const token_hash = request.nextUrl.searchParams.get('token_hash'); const type = request.nextUrl.searchParams.get('type'); const lang=request.nextUrl.searchParams.get('lang')==='en'?'en':'pt'
   if (token_hash && (type === 'invite' || type === 'recovery')) {
     const { error } = await createClient().auth.verifyOtp({ token_hash, type })
-    if (!error) return NextResponse.redirect(new URL('/set-password', request.url))
+    if (!error){const response=NextResponse.redirect(new URL('/set-password',request.url));response.cookies.set('locale',lang,{path:'/',maxAge:31536000,sameSite:'lax',secure:request.nextUrl.protocol==='https:'});return response}
   }
   return NextResponse.redirect(new URL('/login?error=invalidInvite', request.url))
 }
