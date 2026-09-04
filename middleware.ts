@@ -44,7 +44,14 @@ export async function middleware(request: NextRequest) {
   }
 
   if (user && isAppRoute) {
-    const { data: access, error } = await supabase.rpc('has_club_access')
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('is_admin')
+      .eq('id', user.id)
+      .maybeSingle()
+    const { data: access, error } = profile?.is_admin
+      ? { data: true, error: null }
+      : await supabase.rpc('has_club_access')
     if (error || !access) {
       const url = request.nextUrl.clone()
       url.pathname = '/subscription'
