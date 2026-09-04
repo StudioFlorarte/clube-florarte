@@ -5,6 +5,9 @@ grant usage on schema private to authenticated;
 
 alter table public.profiles add column if not exists avatar_url text;
 alter table public.drops add column if not exists translations jsonb not null default '{}';
+alter table public.drops add column if not exists detail_cover_url text;
+alter table public.drops add column if not exists cover_position text not null default '50% 50%';
+alter table public.drops add column if not exists detail_cover_position text not null default '50% 50%';
 alter table public.comments add column if not exists author_name text;
 alter table public.feedback add column if not exists email_sent_at timestamptz;
 update public.comments c set author_name = case when p.display_name like '%@%' then 'Membro' else coalesce(p.display_name,'Membro') end from public.profiles p where c.author_id=p.id and c.author_name is null;
