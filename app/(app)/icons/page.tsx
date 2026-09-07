@@ -1,4 +1,6 @@
-import { createClient } from '@/lib/supabase/server'
-import { getT,getLocale } from '@/lib/locale-server'
-import { localized } from '@/lib/i18n'
-export default async function IconsPage(){const t=getT();const locale=getLocale();const {data,error}=await createClient().from('icon_packs').select('*').order('created_at',{ascending:false});return <div><h1>{t('icons')}</h1><p>{t('iconHelp')}</p><div className="resource-grid">{data?.map(pack=><article className="card drop-card" key={pack.id}>{pack.cover_url&&<div className="drop-cover"><img src={pack.cover_url} alt=""/></div>}<div className="card-content"><h2>{localized(pack,'title',locale)}</h2><p>{localized(pack,'description',locale)}</p><a className="btn-primary" href={pack.canva_url} target="_blank" rel="noopener noreferrer">{t('canva')} ↗</a></div></article>)}</div>{error?<p role="alert">{t('loadError')}</p>:!data?.length&&<p>{t('empty')}</p>}</div>}
+import Link from 'next/link'
+import {createClient} from '@/lib/supabase/server'
+import {getT,getLocale} from '@/lib/locale-server'
+import {localized} from '@/lib/i18n'
+import {assetUrl,communityText} from '@/lib/community'
+export default async function IconsPage(){const t=getT(),locale=getLocale();const {data,error}=await createClient().from('icon_packs').select('*').order('title');return <div><h1>{t('icons')}</h1><p>{communityText(locale,'iconHelp')}</p><div className="resource-grid">{data?.map(pack=><Link className="card icon-collection" key={pack.id} href={`/icons/${pack.id}`}><div className="icon-preview">{(pack.assets||[]).slice(0,4).map((a:{path:string})=><img key={a.path} src={assetUrl('club-icons',a.path)} alt="" loading="lazy"/>)}</div><h2>{localized(pack,'title',locale)} <span aria-hidden>↗</span></h2></Link>)}</div>{error&&<p role="alert">{t('loadError')}</p>}</div>}

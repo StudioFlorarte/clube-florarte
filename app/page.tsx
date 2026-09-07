@@ -3,7 +3,7 @@ import Link from 'next/link'
 const features = [
   { title: 'Drops mensais', desc: 'Coleções novas de templates todo mês, sempre com um tema e uma vibe.' },
   { title: 'Biblioteca de ícones', desc: 'Elementos prontos para dar personalidade ao seu feed.' },
-  { title: 'Paletas & fontes', desc: 'Combinações testadas para você nunca mais travar na escolha.' },
+  { title: 'Paletas de cores', desc: 'Combinações testadas para você nunca mais travar na escolha.' },
   { title: 'Estratégia de conteúdo', desc: 'Um Notion guiado para planejar o que publicar.' },
 ]
 

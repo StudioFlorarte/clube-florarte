@@ -29,6 +29,8 @@ export async function middleware(request: NextRequest) {
 
   const isAppRoute = request.nextUrl.pathname.startsWith('/dashboard') ||
     request.nextUrl.pathname.startsWith('/drops') ||
+    request.nextUrl.pathname.startsWith('/library') ||
+    request.nextUrl.pathname.startsWith('/notifications') ||
     request.nextUrl.pathname.startsWith('/admin') ||
     request.nextUrl.pathname.startsWith('/icons') ||
     request.nextUrl.pathname.startsWith('/palettes') ||

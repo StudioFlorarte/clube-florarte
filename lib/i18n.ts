@@ -30,7 +30,7 @@ export const messages = {
   copyHelp: ["Clique em uma cor para copiar o HEX.","Click a color to copy its HEX.","Cliquez sur une couleur pour copier son code HEX.","Haz clic en un color para copiar su HEX."],
   drops: ['Drops', 'Drops', 'Drops', 'Drops'],
   icons: ['Ícones', 'Icons', 'Icônes', 'Iconos'],
-  palettes: ['Paletas & Fontes', 'Palettes & Fonts', 'Palettes et polices', 'Paletas y fuentes'],
+  palettes: ['Paletas', 'Palettes', 'Palettes', 'Paletas'],
   strategy: ['Estratégia', 'Strategy', 'Stratégie', 'Estrategia'],
   feedback: ['Feedback', 'Feedback', 'Avis', 'Comentarios'],
   services: ['Serviços & Extras', 'Services & Extras', 'Services & Extras', 'Servicios & Extras'],
