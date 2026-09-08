@@ -1,5 +1,5 @@
 'use client'
-import { createContext, useContext, useRef, useTransition } from 'react'
+import { createContext, useContext, useEffect, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { Locale, Key, translate, locales, languageNames } from '@/lib/i18n'
 const Context = createContext<Locale>('pt')
@@ -7,6 +7,22 @@ export function LanguageProvider({ locale, children }: { locale: Locale; childre
 export function useLanguage() { const locale = useContext(Context); return { locale, t: (key: Key) => translate(locale, key) } }
 function Flag({locale}:{locale:Locale}){return <svg className="language-flag" viewBox="0 0 30 20" aria-hidden="true">{locale==='pt'?<><path fill="#168342" d="M0 0h30v20H0z"/><path fill="#ffdf46" d="m15 2 12 8-12 8L3 10z"/><circle cx="15" cy="10" r="5" fill="#244590"/><path d="M10 9q5-1 10 3" fill="none" stroke="white" strokeWidth="1.2"/></>:locale==='en'?<><path fill="#24386e" d="M0 0h30v20H0z"/><path d="m0 0 30 20M30 0 0 20" stroke="white" strokeWidth="5"/><path d="m0 0 30 20M30 0 0 20" stroke="#ce2844" strokeWidth="2"/><path d="M15 0v20M0 10h30" stroke="white" strokeWidth="7"/><path d="M15 0v20M0 10h30" stroke="#ce2844" strokeWidth="4"/></>:locale==='fr'?<><path fill="#fff" d="M0 0h30v20H0z"/><path fill="#25468c" d="M0 0h10v20H0z"/><path fill="#ed4050" d="M20 0h10v20H20z"/></>:<><path fill="#c83241" d="M0 0h30v20H0z"/><path fill="#ffcf48" d="M0 5h30v10H0z"/><path fill="#c83241" d="M7 8h4v5H7z"/></>}</svg>}
 export function LanguageSelect() {
- const {locale}=useLanguage();const router=useRouter();const dropdown=useRef<HTMLDetailsElement>(null);const [pending,startTransition]=useTransition()
- return <details className="language-picker" ref={dropdown} onKeyDown={e=>{if(e.key==='Escape'){e.preventDefault();dropdown.current?.removeAttribute('open');dropdown.current?.querySelector('summary')?.focus()}}} onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget as Node))dropdown.current?.removeAttribute('open')}}><summary aria-label={`Language / Idioma: ${languageNames[locale]}`}><Flag locale={locale}/><span>{languageNames[locale]}</span><span className="language-chevron" aria-hidden="true">⌄</span></summary><div className="language-options">{locales.map(l=><button type="button" key={l} disabled={pending} lang={l} aria-current={l===locale?'true':undefined} onClick={()=>{document.cookie=`locale=${l};path=/;max-age=31536000;SameSite=Lax`;dropdown.current?.removeAttribute('open');dropdown.current?.querySelector('summary')?.focus();startTransition(()=>router.refresh())}}><Flag locale={l}/><span>{languageNames[l]}</span><span aria-hidden="true">{locale===l?'✓':''}</span></button>)}</div></details>
+ const {locale}=useLanguage()
+ const router=useRouter()
+ const [selected,setSelected]=useState(locale)
+ const [pending,startTransition]=useTransition()
+ useEffect(()=>setSelected(locale),[locale])
+ return <label className="language-picker language-native" aria-busy={pending}>
+  <Flag locale={selected}/>
+  <select aria-label="Language / Idioma" value={selected} disabled={pending} onChange={e=>{
+   const next=e.target.value as Locale
+   if(!locales.includes(next))return
+   document.cookie=`locale=${next};path=/;max-age=31536000;SameSite=Lax`
+   setSelected(next)
+   startTransition(()=>router.refresh())
+  }}>
+   {locales.map(l=><option key={l} value={l} lang={l}>{languageNames[l]}</option>)}
+  </select>
+ </label>
 }
+
