@@ -4,5 +4,6 @@ export function trustedAppOrigin(origin: string | null, requestUrl: string, conf
   if (!origin) return null
   const primary = new URL(configuredUrl || requestUrl).origin
   const legacy = 'https://sensational-biscochitos-5c177c.netlify.app'
-  return origin === primary || origin === legacy ? origin : null
+  return origin === primary || origin === legacy || origin === 'https://studioflorarte.com' || origin === 'https://www.studioflorarte.com' ? origin : null
 }
+
