@@ -2,6 +2,8 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
+  // Public campaign page and its assets do not need member session refresh.
+  if (request.nextUrl.pathname === '/landingpage' || request.nextUrl.pathname.startsWith('/landingpage-assets/') || request.nextUrl.pathname === '/api/landingpage/visit') return NextResponse.next()
   let response = NextResponse.next({ request })
 
   const supabase = createServerClient(
@@ -69,3 +71,4 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
 }
+
