@@ -12,7 +12,9 @@ export async function POST(request: NextRequest) {
     let body;
     try { body = JSON.parse(text); } catch { return new NextResponse(null,{status:400}); }
     if (!body || typeof body.visitId !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(body.visitId) || !validVisitToken(body.token)) return new NextResponse(null,{status:400});
-    const {error} = await createAdminClient().from('landing_page_visits').upsert({id:body.visitId},{onConflict:'id',ignoreDuplicates:true});
+    const rawCountry = request.headers.get('x-country')?.toUpperCase();
+    const country = rawCountry && /^[A-Z]{2}$/.test(rawCountry) && rawCountry !== 'XX' ? rawCountry : null;
+    const {error} = await createAdminClient().from('landing_page_visits').upsert({id:body.visitId,country_code:country},{onConflict:'id',ignoreDuplicates:true});
     if (error) { console.error('Landing visit could not be saved', error.code); return new NextResponse(null,{status:503}); }
     return new NextResponse(null,{status:204,headers:{'Cache-Control':'no-store'}});
   } catch { return new NextResponse(null,{status:503}); }
