@@ -15,10 +15,17 @@ export function renderLanding(source: string, option: Option) {
     .replace('Consulte os meios de pagamento disponíveis no checkout seguro da Eduzz.','Consulte os meios de pagamento disponíveis no checkout seguro da Stripe.')
     .replace('<body>',`<body data-checkout-url="${option.checkout}"><nav class="locale-nav"><a href="/landingpage">Alterar idioma ou moeda</a></nav>`);
   if (option.lang === 'pt-PT') {
+    html=html.replace(/\bpra\b/g,'para');
     const pt: [string,string][] = [
-      ['pra','para'],['Você não precisa','Não precisa'],['você saiba','saiba'],['você trocar','trocar'],
-      ['Assine uma vez por ano','Subscreva uma vez por ano'],['Seu tempo','O seu tempo'],['templates prontos','templates preparados'],
-      ['Confira','Veja'],['100% utilizável','100% utilizável'],['seu negócio','o seu negócio']
+      ['Um feed <em>lindo</em> sem você virar designer','Um feed <em>bonito</em> sem ter de ser designer'],
+      ['Você troca as informações, publica e volta a cuidar do seu negócio.','Basta trocar os dados, publicar e voltar a dedicar-se ao seu negócio.'],
+      ['Você não precisa','Não precisa'],['você saiba','saiba'],
+      ['Assine uma vez por ano','Subscreva uma vez por ano'],
+      ['15 templates novos todos os meses','15 novos templates todos os meses'],
+      ['um gratuito','um elemento gratuito'],['Se algum elemento específico for Pro','Se algum elemento for Pro'],
+      ['Drops de trends','Novidades mensais'],['Acesso liberado na hora','Acesso disponibilizado após confirmação do pagamento'],
+      ['Você recebe templates prontos, edita no Canva e publica com consistência','Recebe templates prontos, edita no Canva e publica com consistência'],
+      ['pagamento anual','cobrança anual'],['Tem reembolso?','Há direito a reembolso?'],
     ];
     for (const [from,to] of pt) html=html.replaceAll(from,to);
   }
