@@ -29,7 +29,7 @@ const showcase = document.querySelector('.showcase');
 showcase?.addEventListener('mouseenter',()=>clearInterval(timer));
 showcase?.addEventListener('mouseleave',startRotation);
 showcase?.addEventListener('focusin',()=>clearInterval(timer));
-document.addEventListener('visibilitychange',()=>document.hidden?clearInterval(timer):startRotation());
+document.addEventListener('visibilitychange',()=>document.hidden?clearInterval(timer):showcase&&startRotation());
 if (showcase) startRotation();
 ['gallery-one','gallery-two'].forEach((id,row)=>{
   const images=[];
