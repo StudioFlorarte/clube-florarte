@@ -1,5 +1,4 @@
-// Link de pagamento: substitua aqui para atualizar todos os botões.
-const CHECKOUT_URL = 'https://chk.eduzz.com/7WXGQ1AG0A';
+const CHECKOUT_URL = document.body.dataset.checkoutUrl;
 document.querySelectorAll('.checkout').forEach(link => { link.href = CHECKOUT_URL; });
 const drops = ['elegant', 'vintage', 'y2k', 'rose'];
 const labels = {elegant:'Elegant',vintage:'Vintage',y2k:'Y2K',rose:'Rose'};
@@ -22,16 +21,16 @@ function showDrop(index) {
   document.querySelector('.backdrop').replaceChildren(...rows);
   document.querySelectorAll('[data-drop]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.drop===drop)));
 }
-showDrop(0);
+if (document.querySelector('.showcase')) showDrop(0);
 let timer;
 function startRotation(){clearInterval(timer);if(!matchMedia('(prefers-reduced-motion: reduce)').matches)timer=setInterval(()=>showDrop((currentDrop+1)%4),5500);}
 document.querySelectorAll('[data-drop]').forEach((button,index)=>button.addEventListener('click',()=>{showDrop(index);clearInterval(timer);}));
 const showcase = document.querySelector('.showcase');
-showcase.addEventListener('mouseenter',()=>clearInterval(timer));
-showcase.addEventListener('mouseleave',startRotation);
-showcase.addEventListener('focusin',()=>clearInterval(timer));
+showcase?.addEventListener('mouseenter',()=>clearInterval(timer));
+showcase?.addEventListener('mouseleave',startRotation);
+showcase?.addEventListener('focusin',()=>clearInterval(timer));
 document.addEventListener('visibilitychange',()=>document.hidden?clearInterval(timer):startRotation());
-startRotation();
+if (showcase) startRotation();
 ['gallery-one','gallery-two'].forEach((id,row)=>{
   const images=[];
   const mixed=Array.from({length:20},(_,i)=>({drop:drops[(i*3+row)%4],index:1+((Math.floor(i/4)+row*5)%10)}));
