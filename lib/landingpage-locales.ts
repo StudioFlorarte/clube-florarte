@@ -4,7 +4,7 @@ export const landingOptions: Record<string, Option> = {
   'pt-br': {lang:'pt-BR',price:'R$ 179,90',checkout:'https://buy.stripe.com/test_7sY5kC4V6gAa8C36DE5sA00',label:'Português · Brasil'},
   'pt-pt': {lang:'pt-PT',price:'€ 39,90',checkout:'https://buy.stripe.com/test_dRmbJ0cny97I4lN5zA5sA01',label:'Português · Portugal'},
   'en-usd': {lang:'en',price:'US$ 39.90',checkout:'https://buy.stripe.com/test_eVq9AS3R297IcSj6DE5sA02',label:'English · USD'},
-  'en-eur': {lang:'en',price:'€ 39.90',checkout:'https://buy.stripe.com/test_dRmbJ0cny97I4lN5zA5sA01',label:'English · EUR'},
+  'en-eur': {lang:'en',price:'€ 39.90',checkout:'https://buy.stripe.com/test_dRmbJ0cny97I4lN5zA5sA01?client_reference_id=florarte_en_eur',label:'English · EUR'},
 };
 
 export function renderLanding(source: string, option: Option) {
