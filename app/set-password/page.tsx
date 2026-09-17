@@ -6,9 +6,10 @@ import { getT } from '@/lib/locale-server'
 import PasswordForm from '../password-form'
 import { LanguageSelect } from '../language-provider'
 import Link from 'next/link'
-export default async function SetPasswordPage({searchParams}:{searchParams:{code?:string;error?:string}}) {
-  if(searchParams.code) redirect(`/auth/callback?code=${encodeURIComponent(searchParams.code)}`)
+export default async function SetPasswordPage({searchParams}:{searchParams:{code?:string;error?:string;lang?:string}}) {
+  if(searchParams.code) redirect(`/auth/callback?code=${encodeURIComponent(searchParams.code)}${searchParams.lang==='en'?'&lang=en':''}`)
   const t = getT(); const { data: { user } } = await createClient().auth.getUser()
   return <main className="auth-page"><div className="card form-card auth-card"><LanguageSelect /><h1>{t('setPassword')}</h1>{user ? <PasswordForm onboarding /> : <><p>{t('invalidInvite')}</p><Link href={`/reset-password?lang=${getLocale()}`}>{recoveryCopy[getLocale()].again}</Link></>}</div></main>
 }
+
 
