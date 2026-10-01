@@ -1,3 +1,4 @@
+import {randomUUID} from 'node:crypto';
 import {NextRequest,NextResponse} from 'next/server';
 import {createAdminClient} from '@/lib/supabase/admin';
 import {trustedAppOrigin} from '@/lib/app-origin';
@@ -22,7 +23,18 @@ export async function POST(request:NextRequest){
   const redirectTo=`${new URL(process.env.APP_URL||origin).origin}/set-password?lang=${locale}`;
   let result;
   if(subscription.user_id){result=await admin.auth.resetPasswordForEmail(email,{redirectTo});}
-  else {result=await admin.auth.admin.inviteUserByEmail(email,{redirectTo});}
+  else {
+    // Authorize the existing invite-only user trigger before creating the account.
+    const lease=randomUUID();
+    const {data:claimed,error:claimError}=await admin.rpc('claim_club_invitation',{p_email:email,p_lease:lease});
+    if(claimError)return NextResponse.json({error:'temporarily_unavailable'},{status:503});
+    if(!claimed)return NextResponse.json({ok:true});
+    try {result=await admin.auth.admin.inviteUserByEmail(email,{redirectTo});}
+    finally {
+      const {error:releaseError}=await admin.from('club_invitation_links').update({lease_id:null,locked_until:null}).eq('email',email).eq('lease_id',lease);
+      if(releaseError)console.error('stripe_access_lease_release_failed',releaseError.message);
+    }
+  }
   if(result.error){console.error('stripe_access_delivery_failed',result.error.message);return NextResponse.json({error:'temporarily_unavailable'},{status:503});}
   return NextResponse.json({ok:true});
 }
