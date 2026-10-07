@@ -1,7 +1,7 @@
 const CHECKOUT_URL = document.body.dataset.checkoutUrl;
 document.querySelectorAll('.checkout').forEach(link => { link.href = CHECKOUT_URL; });
-const drops = ['elegant', 'vintage', 'y2k', 'rose'];
-const labels = {elegant:'Elegant',vintage:'Vintage',y2k:'Y2K',rose:'Rose'};
+const drops = ['elegant', 'vintage', 'y2k', 'rose', 'butter-yellow'];
+const labels = {elegant:'Elegant',vintage:'Vintage',y2k:'Y2K',rose:'Rose','butter-yellow':'Butter Yellow'};
 const imagePath = (drop, index) => `/landingpage-assets/assets/${drop}-${index}.${drop === 'rose' && index === 4 ? 'png' : 'webp'}`;
 function templateImage(drop, index, decorative = false) {
   const img = document.createElement('img');
@@ -23,7 +23,7 @@ function showDrop(index) {
 }
 if (document.querySelector('.showcase')) showDrop(0);
 let timer;
-function startRotation(){clearInterval(timer);if(!matchMedia('(prefers-reduced-motion: reduce)').matches)timer=setInterval(()=>showDrop((currentDrop+1)%4),5500);}
+function startRotation(){clearInterval(timer);if(!matchMedia('(prefers-reduced-motion: reduce)').matches)timer=setInterval(()=>showDrop((currentDrop+1)%drops.length),5500);}
 document.querySelectorAll('[data-drop]').forEach((button,index)=>button.addEventListener('click',()=>{showDrop(index);clearInterval(timer);}));
 const showcase = document.querySelector('.showcase');
 showcase?.addEventListener('mouseenter',()=>clearInterval(timer));
@@ -33,7 +33,7 @@ document.addEventListener('visibilitychange',()=>document.hidden?clearInterval(t
 if (showcase) startRotation();
 ['gallery-one','gallery-two'].forEach((id,row)=>{
   const images=[];
-  const mixed=Array.from({length:20},(_,i)=>({drop:drops[(i*3+row)%4],index:1+((Math.floor(i/4)+row*5)%10)}));
+  const mixed=Array.from({length:drops.length*5},(_,i)=>({drop:drops[(i*3+row)%drops.length],index:1+((Math.floor(i/drops.length)+row*5)%10)}));
   for(let repeat=0;repeat<2;repeat++)for(const item of mixed)images.push(templateImage(item.drop,item.index,repeat===1));
   document.getElementById(id).replaceChildren(...images);
 });
